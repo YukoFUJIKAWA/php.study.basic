@@ -18,5 +18,13 @@ if (isset($_POST{'body'})) {
 }
 echo '<hr>';
 
+// メール送信
+function sendMailFromForm($title, $body) {
+	echo '件名：' . $title . '<br>';
+	echo '本文：' . nl2br($body) . '<br>';
+	echo '<hr>';
+	echo '送信しました';
+}
 // 送信完了
-echo '送信しました';
+sendMailFromForm($_POST['title'], $_POST['body']);
+
