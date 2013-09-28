@@ -24,26 +24,49 @@
 			margin: 40px 0;
 			padding: 40px;
 		}
+		div.error-message {
+			background-color: red;
+			color: white;
+		}
 	</style>
 </head>
 <body>
 <div id="container">
 <?php
 	session_start();
-	if (!empty($_SESSION['title'])) {
+	$session = array_intersect_key(
+		$_SESSION,
+		array(
+			'title' => '',
+			'body' => '',
+			'isError' => false,
+		)
+	);
+	extract($session);
+	session_destroy();
+
+	if ($isError) {
+?>
+	<div class="message error-message">
+		内容を確認してください。<br>
+	</div>
+<?php
+	} elseif (!empty($title)) {
 ?>
 	<div class="message">
 		メールを送信しました。<br>
-		（件名「<?php echo $_SESSION['title']; ?>」）
+		（件名「<?php echo $title; ?>」）
 	</div>
 <?php
+		$title = '';
+		$body = '';
 	}
 ?>
 	<h1>メールフォーム</h1>
 	<form action="form.php" method="post">
-		<input type="text" name="title" placeholder="メールアドレス">
+		<input type="text" name="title" placeholder="メールアドレス" value="<?php echo $title; ?>">
 		<br>
-		<textarea name="body" placeholder="本文" rows="10"></textarea>
+		<textarea name="body" placeholder="本文" rows="10"><?php echo $body; ?></textarea>
 		<br>
 		<input type="submit" value="送信">
 	</form>

@@ -3,23 +3,44 @@
 // セッション開始
 session_start();
 
-// POSTされた内容を表示する
-echo '<b>$_POST</b>:';
-var_dump($_POST);
-echo '<br>';
+// バリデーション
+class Validation {
+	public $title;
+	public $body;
 
-if (isset($_POST{'title'})) {
-	echo '<b>$_POST["title"]</b>:';
-	var_dump($_POST['title']);
-	echo '<br>';
+	public function __construct() {
+		extract($_POST);
+		if (!empty($title)) {
+			$this->title = $title;
+		}
+		if (!empty($body)) {
+			$this->body = $body;
+		}
+	}
+
+	public function all() {
+		return $this->title() && $this->body();
+	}
+
+	public function title() {
+		return !empty($this->title);
+	}
+
+	public function body() {
+		return !empty($this->body);
+	}
 }
 
-if (isset($_POST{'body'})) {
-	echo '<b>$_POST["body"]</b>:';
-	var_dump($_POST['body']);
-	echo '<br>';
+// バリデーションエラー時は元に戻る
+$validation = new Validation();
+if (!$validation->all()) {
+	// セッションに書き込んでリダイレクト
+	$_SESSION['title'] = $validation->title;
+	$_SESSION['body'] = $validation->body;
+	$_SESSION['isError'] = true;
+	header('Location: index.php');
+	exit;
 }
-echo '<hr>';
 
 // メール送信
 function sendMailFromForm($title, $body) {
