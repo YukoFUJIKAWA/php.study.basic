@@ -1,5 +1,8 @@
 <?php
 
+// セッション開始
+session_start();
+
 // POSTされた内容を表示する
 echo '<b>$_POST</b>:';
 var_dump($_POST);
@@ -24,6 +27,10 @@ function sendMailFromForm($title, $body) {
 	echo '本文：' . nl2br($body) . '<br>';
 	echo '<hr>';
 	echo '送信しました';
+	// セッションに書き込んでリダイレクト
+	$_SESSION['title'] = $title;
+	$_SESSION['body'] = $body;
+	header('Location: index.php');
 }
 // 送信完了
 sendMailFromForm($_POST['title'], $_POST['body']);

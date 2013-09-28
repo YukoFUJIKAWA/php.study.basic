@@ -18,10 +18,27 @@
 			margin: 20px auto;
 			width: 50%;
 		}
+		div.message {
+			background-color: #ff0;
+			font-weight: bold;
+			margin: 40px 0;
+			padding: 40px;
+		}
 	</style>
 </head>
 <body>
 <div id="container">
+<?php
+	session_start();
+	if (!empty($_SESSION['title'])) {
+?>
+	<div class="message">
+		メールを送信しました。<br>
+		（件名「<?php echo $_SESSION['title']; ?>」）
+	</div>
+<?php
+	}
+?>
 	<h1>メールフォーム</h1>
 	<form action="form.php" method="post">
 		<input type="text" name="title" placeholder="メールアドレス">
