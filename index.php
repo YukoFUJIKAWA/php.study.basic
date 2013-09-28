@@ -55,7 +55,7 @@
 ?>
 	<div class="message">
 		メールを送信しました。<br>
-		（件名「<?php echo $title; ?>」）
+		（件名「<?php echo htmlspecialchars($title); ?>」）
 	</div>
 <?php
 		$title = '';
@@ -64,9 +64,9 @@
 ?>
 	<h1>メールフォーム</h1>
 	<form action="form.php" method="post">
-		<input type="text" name="title" placeholder="メールアドレス" value="<?php echo $title; ?>">
+		<input type="text" name="title" placeholder="メールアドレス" value="<?php echo htmlspecialchars($title); ?>">
 		<br>
-		<textarea name="body" placeholder="本文" rows="10"><?php echo $body; ?></textarea>
+		<textarea name="body" placeholder="本文" rows="10"><?php echo htmlspecialchars($body); ?></textarea>
 		<br>
 		<input type="submit" value="送信">
 	</form>
